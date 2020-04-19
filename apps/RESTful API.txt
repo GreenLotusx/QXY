@@ -1,0 +1,55 @@
+文档说明：所有参数字段带@符号为必传/必有参数,@符仅作对接标识，非参数携带符
+常见状态码：
+     1  ：正常
+    -11 ：令牌不合法
+    -12 ：用户名或密码不正确
+    -13 ：没有权限访问
+    -21 ：请求方式错误
+    -22 ：参数缺失
+    -31 ：服务器异常
+
+1：
+    接口说明：用户注册
+    url：/userreg
+    请求方式：POST
+    请求参数：
+        @username       string  用户名
+        @password       string  密码
+        @nick           string  昵称
+        @email          string  邮箱
+    返回参数：id-用户id，name-用户名，nick-用户昵称，timestamp-创建用户时间戳
+        {
+          "data": {
+            "id": 23,
+            "name": "root",
+            "nick": "黄梁一梦",
+            "timestamp": 1587318249
+          },
+          "msg": "成功",
+          "status": 0
+        }
+
+    状态码：
+        -101：用户名长度不合法
+        -102：密码长度不合法
+        -103：昵称不合法
+        -104：邮箱不合法
+        -105：用户名已存在
+
+2：
+    接口说明：用户登陆
+    url：/login
+    请求方式：POST
+    请求参数：
+        @user           string  用户名
+        @password       string  密码
+    正常响应：
+       @status          int     状态码
+       @userid          int     用户唯一id
+       @nick            string  用户昵称
+       @token           string  服务端签发的合法令牌，特定接口必须携带此参数
+       @filedata        string  用户文件目录结构，可逆向序列化为字典
+       @cansize         int     可用空间大小/KB
+       @totalsize       int     总空间大小/KB
+       @identity        int     用户权限
+    状态码：无特殊状态码
