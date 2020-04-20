@@ -17,10 +17,11 @@ def check_num_maxmin(iNum,iMax,iMin):
     return True
 
 
-def hmac_sha256_single(str):
+def hmac_sha256_single(string):
     """
     hmacsha256加密
     :param str: 加密字符串
     :return: 加密结果转换为16进制字符串，并大写
     """
+    string = str(string)
     return hmac.new(str.encode("utf-8"), digestmod=hashlib.sha256).hexdigest().upper()

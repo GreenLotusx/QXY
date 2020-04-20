@@ -1,9 +1,10 @@
 import re
 from flask import views,request,jsonify
 from ..util.consts import STATUS_CODE
-from ..util.common import check_num_maxmin
-from ..util.config import USERNAME_LENMAX,USERNAME_LENMIN,USERNICK_LENMAX,\
-    USERNICK_LENMIN,PASSWORD_LENMAX,PASSWORD_LENMIN
+from ..util.common import check_num_maxmin, hmac_sha256_single
+from ..util.config import USERNAME_LENMAX, USERNAME_LENMIN, USERNICK_LENMAX, \
+    USERNICK_LENMIN, PASSWORD_LENMAX, PASSWORD_LENMIN, SHA256_SALT_HEAD, SHA256_SALT_FOOT
+
 
 class ViewObject(views.MethodView):
 
@@ -48,6 +49,11 @@ class ViewObject(views.MethodView):
         if not bCheck:
             return False,"PassWord_Lenght"
         return True,None
+
+    def _format_pwd(self,sPwd):
+        sPwd = SHA256_SALT_HEAD + sPwd + SHA256_SALT_FOOT
+        salt = hmac_sha256_single(sPwd)
+        return salt
 
     def _format_retdata(self,sStatus,dData=None):
         info = STATUS_CODE[sStatus]

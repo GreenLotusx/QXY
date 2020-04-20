@@ -6,7 +6,7 @@ from ..util.ext import db,redis
 from ..util.config import SHA256_SALT_HEAD,SHA256_SALT_FOOT
 from ..models import User
 
-class reg(ViewObject):
+class Reg(ViewObject):
 
     # decorators = []
 
@@ -29,12 +29,12 @@ class reg(ViewObject):
         sPwd = request.form.get("password")
         sNick = request.form.get("nick")
         sEmail = request.form.get("email")
-        sPwd = self.__pwd_format(sPwd)
+        sPwd = self._format_pwd(sPwd)
         user = User(sUser,sPwd,sNick,sEmail)
         try:
             db.session.add(user)
             db.session.commit()
-            redis.set("user_"+str(user.u_name),sPwd)
+            redis.set("user_"+str(user.u_name),user._getall())
             data = {
                 "id": user.u_id,
                 "name":user.u_name,
@@ -46,10 +46,6 @@ class reg(ViewObject):
             logging.error(ex)
             return self._format_retdata("UserReg_Error")
 
-    def __pwd_format(self,sPwd):
-        sPwd = SHA256_SALT_HEAD + sPwd + SHA256_SALT_FOOT
-        salt = hmac_sha256_single(sPwd)
-        return salt
 
 bp_reg = Blueprint("reg",__name__)
-bp_reg.add_url_rule("/userreg",endpoint="bp_reg",view_func=reg.as_view(name="reg"))
+bp_reg.add_url_rule("/userreg",endpoint="bp_reg",view_func=Reg.as_view(name="reg"))

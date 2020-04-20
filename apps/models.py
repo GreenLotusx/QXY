@@ -12,7 +12,7 @@ class User(db.Model):
     u_data = db.Column(db.String(120),nullable=False)
     u_size = db.Column(db.BigInteger,nullable=False)
     u_totalsize = db.Column(db.BigInteger,nullable=False)
-    ui_identity = db.Column(db.Integer,nullable=False)
+    u_identity = db.Column(db.Integer,nullable=False)
 
     def __init__(self,sName,sSalt,sNick,sEmail,dData=None,iSize=None,iTotal=None,iIdent=None):
         self.u_name = sName
@@ -23,10 +23,37 @@ class User(db.Model):
         self.u_data = str(dData or {})
         self.u_size = iSize or 10*1024*1024
         self.u_totalsize = iTotal or 10*1024*1024
-        self.ui_identity = iIdent or 2
+        self.u_identity = iIdent or 2
 
     def __repr__(self):
         return '<User %r>' % self.u_name
+
+    def _get(self,lAttr):
+        ret = []
+        if isinstance(lAttr,str):
+            lAttr = [lAttr]
+        for attr in lAttr:
+            try:
+                val = eval("self.u_" + attr)
+                ret.append(val)
+            except:
+                ret.append(None)
+        if len(ret)>1:
+            return ret
+        return ret[0]
+
+    def _getall(self):
+        return {
+            "id":self.u_id,
+            "name":self.u_name,
+            "pwd":self.u_salt,
+            "nick":self.u_nickname,
+            "email":self.u_email,
+            "file":self.u_data,
+            "size":self.u_size,
+            "total":self.u_totalsize,
+            "ident":self.u_identity
+        }
 
 class File(db.Model):
     __tablename__ = "tab_file"

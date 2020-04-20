@@ -18,5 +18,7 @@ STATUS_CODE = {
     "UserName_Lenght"       :[-101,"用户名长度不合法"],
     "UserName_Exist"        :[-105,"用户名已存在"],
     "PassWord_Lenght"       :[-102,"密码长度不合法"],
-    "UserReg_Error"         :[-31,"服务器异常"]
+    "UserReg_Error"         :[-31,"未知异常"],
+    "Login_Error"           :[-101,"用户名或密码不正确"],
+    "Token_Error"           :[-31,"未知异常"]
 }

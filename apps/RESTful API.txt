@@ -6,7 +6,7 @@
     -13 ：没有权限访问
     -21 ：请求方式错误
     -22 ：参数缺失
-    -31 ：服务器异常
+    -31 ：未知异常
 
 1：
     接口说明：用户注册
@@ -44,12 +44,26 @@
         @user           string  用户名
         @password       string  密码
     正常响应：
-       @status          int     状态码
-       @userid          int     用户唯一id
-       @nick            string  用户昵称
-       @token           string  服务端签发的合法令牌，特定接口必须携带此参数
-       @filedata        string  用户文件目录结构，可逆向序列化为字典
-       @cansize         int     可用空间大小/KB
-       @totalsize       int     总空间大小/KB
-       @identity        int     用户权限
-    状态码：无特殊状态码
+       @status      int     状态码
+       @id          int     用户唯一id
+       @nick        string  用户昵称
+       @token       string  服务端签发的合法令牌，特定接口必须携带此参数
+       @file        string  用户文件目录结构，可逆向序列化为字典
+       @size        int     可用空间大小/KB
+       @total       int     总空间大小/KB
+       @ident       int     用户权限
+        {
+          "data": {
+            "file": {},
+            "id": 1,
+            "ident": 2,
+            "nick": "黄梁一梦",
+            "size": 10485760,
+            "token": "EB61DA6C91B6E4876D8718BDF02467BDEF2E0970950C7B816715DA9114DEA4D4",
+            "total": 10485760
+          },
+          "msg": "成功",
+          "status": 0
+        }
+    状态码：
+        -101:用户名或密码不正确

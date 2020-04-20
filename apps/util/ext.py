@@ -10,15 +10,23 @@ class Redis(object):
 
     def get(self,key):
         data = self.conn.get(key)
-        return data
+        if data:
+            data = str(data, encoding="utf-8")
+            return eval(data)
+        return None
 
     def set(self,key,val,time=None):
-        data = val
-        self.conn.set(
-            name=key,
-            value=data,
-            ex=time or REDIS_TIMEOUT
-        )
+        bData = str(val).encode("utf-8")
+        sData = str(bData, encoding="utf-8")
+        try:
+            self.conn.set(
+                name=key,
+                value=sData,
+                ex=time or REDIS_TIMEOUT
+            )
+            return True
+        except:
+            return False
 
 db = SQLAlchemy()
 redis = Redis()
